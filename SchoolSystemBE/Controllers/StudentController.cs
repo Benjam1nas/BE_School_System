@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using WebApi.Models;
+using SchoolSystemBE.Models;
 
 [Route("api/[controller]")]
 [ApiController]

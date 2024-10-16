@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
-using System.Reflection.Emit;
-using WebApi.Models;
+using SchoolSystemBE.Models;
 
 public class SchoolDbContext : DbContext
 {

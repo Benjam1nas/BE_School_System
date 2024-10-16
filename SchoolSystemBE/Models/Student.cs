@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace WebApi.Models // Adjust to your namespace
+namespace SchoolSystemBE.Models
 {
     public class Student
     {
