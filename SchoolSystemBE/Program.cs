@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
             builder.WithOrigins("http://localhost:5173")
                    .AllowAnyHeader()
                    .AllowAnyMethod()
-                   .AllowCredentials(); // Use if you need credentials (e.g., cookies)
+                   .AllowCredentials();
         });
 });
 
