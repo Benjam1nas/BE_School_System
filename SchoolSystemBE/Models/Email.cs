@@ -2,7 +2,7 @@ namespace SchoolSystemBE.Models
 {
     public class Email
     {
-        public int EmailId { get; set; }
+        public int Id { get; set; }
         public int SenderId { get; set; }
         public int ReceiverId { get; set; }
         public string Subject { get; set; }
@@ -13,7 +13,7 @@ namespace SchoolSystemBE.Models
 
     public class EmailDocument
     {
-        public int DocId { get; set; }
+        public int Id { get; set; }
         public int EmailId { get; set; }
         public string Name { get; set; }
         public string Url { get; set; }

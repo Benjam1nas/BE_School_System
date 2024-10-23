@@ -22,10 +22,10 @@ public class SchoolDbContext : DbContext
         //-------------------------------------------------------EXTRACURRICULAR
 
         modelBuilder.Entity<Extracurricular>()
-            .HasKey(ex => ex.EcId);
+            .HasKey(ex => ex.Id);
 
         modelBuilder.Entity<Extracurricular>()
-            .Property(ex => ex.EcId)
+            .Property(ex => ex.Id)
             .ValueGeneratedOnAdd();
 
         modelBuilder.Entity<Extracurricular>()
@@ -70,14 +70,14 @@ public class SchoolDbContext : DbContext
         //---------------------------------------------------EcEnrollment
 
         modelBuilder.Entity<EcEnrollment>()
-          .HasKey(enr => enr.EcEnrollId);
+          .HasKey(enr => enr.Id);
 
         modelBuilder.Entity<EcEnrollment>()
-            .Property(enr => enr.EcEnrollId)
+            .Property(enr => enr.Id)
             .ValueGeneratedOnAdd();
 
         modelBuilder.Entity<EcEnrollment>()
-            .Property(enr => enr.EcId)
+            .Property(enr => enr.Id)
             .IsRequired();
 
         modelBuilder.Entity<EcEnrollment>()
@@ -96,10 +96,10 @@ public class SchoolDbContext : DbContext
 
         //-------------------------------------------------------------EMAIL
         modelBuilder.Entity<Email>()
-         .HasKey(em => em.EmailId);
+         .HasKey(em => em.Id);
 
         modelBuilder.Entity<Email>()
-            .Property(em => em.EmailId)
+            .Property(em => em.Id)
             .ValueGeneratedOnAdd();
 
         modelBuilder.Entity<Email>()
@@ -117,10 +117,10 @@ public class SchoolDbContext : DbContext
 
         //-----------------------------------------------------------EMAIL DOCUMENT
         modelBuilder.Entity<EmailDocument>()
-         .HasKey(emd => emd.DocId);
+         .HasKey(emd => emd.Id);
 
         modelBuilder.Entity<EmailDocument>()
-            .Property(emd => emd.DocId)
+            .Property(emd => emd.Id)
             .ValueGeneratedOnAdd();
 
         modelBuilder.Entity<EmailDocument>()
@@ -144,11 +144,11 @@ public class SchoolDbContext : DbContext
 
         //----------------------------------------------------TEMPORARY LOGIN
         modelBuilder.Entity<TemporaryLogin>()
-            .HasKey(tl => tl.TLId); 
+            .HasKey(tl => tl.Id); 
 
 
         modelBuilder.Entity<TemporaryLogin>()
-            .Property(tl => tl.TLId)
+            .Property(tl => tl.Id)
             .ValueGeneratedOnAdd(); 
 
         modelBuilder.Entity<TemporaryLogin>()
@@ -172,10 +172,10 @@ public class SchoolDbContext : DbContext
         //---------------------------------------------------------PARENT
       
         modelBuilder.Entity<Parent>()
-          .HasKey(p => p.ParentId);
+          .HasKey(p => p.Id);
 
         modelBuilder.Entity<Parent>()
-            .Property(p => p.ParentId)
+            .Property(p => p.Id)
             .ValueGeneratedOnAdd();
 
         modelBuilder.Entity<Parent>()

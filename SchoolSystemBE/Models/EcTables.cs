@@ -14,7 +14,7 @@ namespace SchoolSystemBE.Models
 
     public class Extracurricular
     {
-        public int EcId { get; set; }
+        public int Id { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Coordinator { get; set; }
@@ -28,7 +28,7 @@ namespace SchoolSystemBE.Models
 
     public class EcEnrollment
     {
-        public int EcEnrollId { get; set; }
+        public int Id { get; set; }
         public int EcId { get; set; }
         public int StudentId { get; set; }
         public DateTime EnrollmentDate { get; set; }
