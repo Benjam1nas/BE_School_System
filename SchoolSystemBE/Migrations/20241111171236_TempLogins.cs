@@ -14,7 +14,7 @@ namespace SchoolSystemBE.Migrations
                 name: "TemporaryLogins",
                 columns: table => new
                 {
-                    TLId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Username = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
                     PasswordHash = table.Column<string>(type: "nvarchar(64)", maxLength: 64, nullable: false),
@@ -23,8 +23,14 @@ namespace SchoolSystemBE.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TemporaryLogins", x => x.TLId);
+                    table.PrimaryKey("PK_TemporaryLogins", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TemporaryLogins_Username",
+                table: "TemporaryLogins",
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />

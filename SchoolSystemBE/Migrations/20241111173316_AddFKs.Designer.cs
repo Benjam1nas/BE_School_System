@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace SchoolSystemBE.Migrations
 {
     [DbContext(typeof(SchoolDbContext))]
-    [Migration("20241023070429_StudentParentUpdate")]
-    partial class StudentParentUpdate
+    [Migration("20241111173316_AddFKs")]
+    partial class AddFKs
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -26,11 +26,11 @@ namespace SchoolSystemBE.Migrations
 
             modelBuilder.Entity("SchoolSystemBE.Models.EcEnrollment", b =>
                 {
-                    b.Property<int>("EcEnrollId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EcEnrollId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("EcId")
                         .HasColumnType("int");
@@ -46,80 +46,22 @@ namespace SchoolSystemBE.Migrations
                     b.Property<int>("StudentId")
                         .HasColumnType("int");
 
-                    b.HasKey("EcEnrollId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("EcId");
+
+                    b.HasIndex("StudentId");
 
                     b.ToTable("EcEnrollments");
                 });
 
-            modelBuilder.Entity("SchoolSystemBE.Models.Email", b =>
-                {
-                    b.Property<int>("EmailId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EmailId"));
-
-                    b.Property<string>("Content")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("DATETIME");
-
-                    b.Property<int>("ReceiverId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("References")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SenderId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Subject")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("EmailId");
-
-                    b.ToTable("Emails");
-                });
-
-            modelBuilder.Entity("SchoolSystemBE.Models.EmailDocument", b =>
-                {
-                    b.Property<int>("DocId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DocId"));
-
-                    b.Property<int>("EmailId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("UploadedBy")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("DocId");
-
-                    b.ToTable("EmailDocuments");
-                });
-
             modelBuilder.Entity("SchoolSystemBE.Models.Extracurricular", b =>
                 {
-                    b.Property<int>("EcId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EcId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Category")
                         .HasColumnType("int");
@@ -133,7 +75,7 @@ namespace SchoolSystemBE.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("EndDate")
+                    b.Property<DateTime?>("EndDate")
                         .HasColumnType("DATETIME");
 
                     b.Property<string>("Name")
@@ -141,7 +83,7 @@ namespace SchoolSystemBE.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("decimal(5,2)");
 
                     b.Property<int>("Spots")
@@ -153,40 +95,20 @@ namespace SchoolSystemBE.Migrations
                     b.Property<int>("Type")
                         .HasColumnType("int");
 
-                    b.HasKey("EcId");
+                    b.HasKey("Id");
 
                     b.ToTable("Extracurriculars");
                 });
 
-            modelBuilder.Entity("SchoolSystemBE.Models.Grades", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<int>("grade")
-                        .HasColumnType("int");
-
-                    b.Property<int>("studentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Grades");
-                });
-
             modelBuilder.Entity("SchoolSystemBE.Models.Parent", b =>
                 {
-                    b.Property<int>("ParentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ParentId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -201,14 +123,16 @@ namespace SchoolSystemBE.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("ParentId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Parents");
                 });
@@ -221,11 +145,10 @@ namespace SchoolSystemBE.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("DateOfBirth")
+                    b.Property<DateTime?>("DateOfBirth")
                         .HasColumnType("DATE");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
@@ -240,7 +163,6 @@ namespace SchoolSystemBE.Migrations
                         .HasColumnType("nvarchar(255)");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasMaxLength(12)
                         .HasColumnType("nvarchar(12)");
 
@@ -250,7 +172,6 @@ namespace SchoolSystemBE.Migrations
                         .HasDefaultValue(true);
 
                     b.Property<string>("StudentIdNo")
-                        .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
@@ -258,6 +179,9 @@ namespace SchoolSystemBE.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Students");
                 });
@@ -279,11 +203,11 @@ namespace SchoolSystemBE.Migrations
 
             modelBuilder.Entity("SchoolSystemBE.Models.TemporaryLogin", b =>
                 {
-                    b.Property<int>("TLId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("TLId"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<string>("PasswordHash")
                         .IsRequired()
@@ -303,7 +227,13 @@ namespace SchoolSystemBE.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.HasKey("TLId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.HasIndex("Username")
+                        .IsUnique();
 
                     b.ToTable("TemporaryLogins");
                 });
@@ -316,29 +246,66 @@ namespace SchoolSystemBE.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("Username")
+                        .IsUnique();
+
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("SchoolSystemBE.Models.EcEnrollment", b =>
+                {
+                    b.HasOne("SchoolSystemBE.Models.Extracurricular", "Extracurricular")
+                        .WithMany("EcEnrollments")
+                        .HasForeignKey("EcId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolSystemBE.Models.Student", "Student")
+                        .WithMany("EcEnrollments")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Extracurricular");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("SchoolSystemBE.Models.Parent", b =>
+                {
+                    b.HasOne("SchoolSystemBE.Models.User", "User")
+                        .WithOne("Parent")
+                        .HasForeignKey("SchoolSystemBE.Models.Parent", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SchoolSystemBE.Models.Student", b =>
+                {
+                    b.HasOne("SchoolSystemBE.Models.User", "User")
+                        .WithOne("Student")
+                        .HasForeignKey("SchoolSystemBE.Models.Student", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.StudentParent", b =>
@@ -346,18 +313,34 @@ namespace SchoolSystemBE.Migrations
                     b.HasOne("SchoolSystemBE.Models.Parent", "Parent")
                         .WithMany("StudentParents")
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SchoolSystemBE.Models.Student", "Student")
                         .WithMany("StudentParents")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Parent");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("SchoolSystemBE.Models.TemporaryLogin", b =>
+                {
+                    b.HasOne("SchoolSystemBE.Models.User", "User")
+                        .WithOne("TemporaryLogin")
+                        .HasForeignKey("SchoolSystemBE.Models.TemporaryLogin", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SchoolSystemBE.Models.Extracurricular", b =>
+                {
+                    b.Navigation("EcEnrollments");
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.Parent", b =>
@@ -367,7 +350,21 @@ namespace SchoolSystemBE.Migrations
 
             modelBuilder.Entity("SchoolSystemBE.Models.Student", b =>
                 {
+                    b.Navigation("EcEnrollments");
+
                     b.Navigation("StudentParents");
+                });
+
+            modelBuilder.Entity("SchoolSystemBE.Models.User", b =>
+                {
+                    b.Navigation("Parent")
+                        .IsRequired();
+
+                    b.Navigation("Student")
+                        .IsRequired();
+
+                    b.Navigation("TemporaryLogin")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

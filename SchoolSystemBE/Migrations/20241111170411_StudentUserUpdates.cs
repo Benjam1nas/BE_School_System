@@ -6,11 +6,48 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SchoolSystemBE.Migrations
 {
     /// <inheritdoc />
-    public partial class StudentParentUpdate : Migration
+    public partial class StudentUserUpdates : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropColumn(
+                name: "Email",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "FirstName",
+                table: "Users");
+
+            migrationBuilder.DropColumn(
+                name: "LastName",
+                table: "Users");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Username",
+                table: "Users",
+                type: "nvarchar(255)",
+                maxLength: 255,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Password",
+                table: "Users",
+                type: "nvarchar(64)",
+                maxLength: 64,
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(max)");
+
+            migrationBuilder.AddColumn<int>(
+                name: "Role",
+                table: "Users",
+                type: "int",
+                nullable: false,
+                defaultValue: 0);
+
             migrationBuilder.AlterColumn<string>(
                 name: "LastName",
                 table: "Students",
@@ -34,7 +71,7 @@ namespace SchoolSystemBE.Migrations
                 table: "Students",
                 type: "nvarchar(255)",
                 maxLength: 255,
-                nullable: false,
+                nullable: true,
                 oldClrType: typeof(string),
                 oldType: "nvarchar(max)");
 
@@ -42,7 +79,7 @@ namespace SchoolSystemBE.Migrations
                 name: "DateOfBirth",
                 table: "Students",
                 type: "DATE",
-                nullable: false,
+                nullable: true,
                 oldClrType: typeof(DateTime),
                 oldType: "datetime2");
 
@@ -51,8 +88,7 @@ namespace SchoolSystemBE.Migrations
                 table: "Students",
                 type: "nvarchar(12)",
                 maxLength: 12,
-                nullable: false,
-                defaultValue: "");
+                nullable: true);
 
             migrationBuilder.AddColumn<bool>(
                 name: "Status",
@@ -66,8 +102,7 @@ namespace SchoolSystemBE.Migrations
                 table: "Students",
                 type: "nvarchar(20)",
                 maxLength: 20,
-                nullable: false,
-                defaultValue: "");
+                nullable: true);
 
             migrationBuilder.AddColumn<int>(
                 name: "UserId",
@@ -76,61 +111,23 @@ namespace SchoolSystemBE.Migrations
                 nullable: false,
                 defaultValue: 0);
 
-            migrationBuilder.CreateTable(
-                name: "Parents",
-                columns: table => new
-                {
-                    ParentId = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(255)", maxLength: 255, nullable: false),
-                    Phone = table.Column<string>(type: "nvarchar(12)", maxLength: 12, nullable: false),
-                    UserId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Parents", x => x.ParentId);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "StudentsParents",
-                columns: table => new
-                {
-                    StudentId = table.Column<int>(type: "int", nullable: false),
-                    ParentId = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_StudentsParents", x => new { x.StudentId, x.ParentId });
-                    table.ForeignKey(
-                        name: "FK_StudentsParents_Parents_ParentId",
-                        column: x => x.ParentId,
-                        principalTable: "Parents",
-                        principalColumn: "ParentId",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_StudentsParents_Students_StudentId",
-                        column: x => x.StudentId,
-                        principalTable: "Students",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
-                name: "IX_StudentsParents_ParentId",
-                table: "StudentsParents",
-                column: "ParentId");
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "StudentsParents");
+            migrationBuilder.DropIndex(
+                name: "IX_Users_Username",
+                table: "Users");
 
-            migrationBuilder.DropTable(
-                name: "Parents");
+            migrationBuilder.DropColumn(
+                name: "Role",
+                table: "Users");
 
             migrationBuilder.DropColumn(
                 name: "Phone",
@@ -147,6 +144,45 @@ namespace SchoolSystemBE.Migrations
             migrationBuilder.DropColumn(
                 name: "UserId",
                 table: "Students");
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Username",
+                table: "Users",
+                type: "nvarchar(max)",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(255)",
+                oldMaxLength: 255);
+
+            migrationBuilder.AlterColumn<string>(
+                name: "Password",
+                table: "Users",
+                type: "nvarchar(max)",
+                nullable: false,
+                oldClrType: typeof(string),
+                oldType: "nvarchar(64)",
+                oldMaxLength: 64);
+
+            migrationBuilder.AddColumn<string>(
+                name: "Email",
+                table: "Users",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "FirstName",
+                table: "Users",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
+
+            migrationBuilder.AddColumn<string>(
+                name: "LastName",
+                table: "Users",
+                type: "nvarchar(max)",
+                nullable: false,
+                defaultValue: "");
 
             migrationBuilder.AlterColumn<string>(
                 name: "LastName",
@@ -171,17 +207,21 @@ namespace SchoolSystemBE.Migrations
                 table: "Students",
                 type: "nvarchar(max)",
                 nullable: false,
+                defaultValue: "",
                 oldClrType: typeof(string),
                 oldType: "nvarchar(255)",
-                oldMaxLength: 255);
+                oldMaxLength: 255,
+                oldNullable: true);
 
             migrationBuilder.AlterColumn<DateTime>(
                 name: "DateOfBirth",
                 table: "Students",
                 type: "datetime2",
                 nullable: false,
+                defaultValue: new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                 oldClrType: typeof(DateTime),
-                oldType: "DATE");
+                oldType: "DATE",
+                oldNullable: true);
         }
     }
 }

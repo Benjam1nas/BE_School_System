@@ -10,6 +10,7 @@ namespace SchoolSystemBE.Models
         public int UserId { get; set; }
 
         public ICollection<StudentParent> StudentParents { get; set; }
+        public User User { get; set; }
     }
 
 

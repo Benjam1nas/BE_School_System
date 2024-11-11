@@ -45,67 +45,11 @@ namespace SchoolSystemBE.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("EcId");
+
+                    b.HasIndex("StudentId");
+
                     b.ToTable("EcEnrollments");
-                });
-
-            modelBuilder.Entity("SchoolSystemBE.Models.Email", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Content")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Date")
-                        .HasColumnType("DATETIME");
-
-                    b.Property<int>("ReceiverId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("References")
-                        .HasColumnType("int");
-
-                    b.Property<int>("SenderId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Subject")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Emails");
-                });
-
-            modelBuilder.Entity("SchoolSystemBE.Models.EmailDocument", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("EmailId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("UploadedBy")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("nvarchar(255)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("EmailDocuments");
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.Extracurricular", b =>
@@ -153,25 +97,6 @@ namespace SchoolSystemBE.Migrations
                     b.ToTable("Extracurriculars");
                 });
 
-            modelBuilder.Entity("SchoolSystemBE.Models.Grades", b =>
-                {
-                    b.Property<int>("id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("id"));
-
-                    b.Property<int>("grade")
-                        .HasColumnType("int");
-
-                    b.Property<int>("studentId")
-                        .HasColumnType("int");
-
-                    b.HasKey("id");
-
-                    b.ToTable("Grades");
-                });
-
             modelBuilder.Entity("SchoolSystemBE.Models.Parent", b =>
                 {
                     b.Property<int>("Id")
@@ -202,6 +127,9 @@ namespace SchoolSystemBE.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId")
+                        .IsUnique();
 
                     b.ToTable("Parents");
                 });
@@ -249,6 +177,9 @@ namespace SchoolSystemBE.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
                     b.ToTable("Students");
                 });
 
@@ -295,6 +226,12 @@ namespace SchoolSystemBE.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("UserId")
+                        .IsUnique();
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
                     b.ToTable("TemporaryLogins");
                 });
 
@@ -327,23 +264,80 @@ namespace SchoolSystemBE.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("SchoolSystemBE.Models.EcEnrollment", b =>
+                {
+                    b.HasOne("SchoolSystemBE.Models.Extracurricular", "Extracurricular")
+                        .WithMany("EcEnrollments")
+                        .HasForeignKey("EcId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("SchoolSystemBE.Models.Student", "Student")
+                        .WithMany("EcEnrollments")
+                        .HasForeignKey("StudentId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Extracurricular");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("SchoolSystemBE.Models.Parent", b =>
+                {
+                    b.HasOne("SchoolSystemBE.Models.User", "User")
+                        .WithOne("Parent")
+                        .HasForeignKey("SchoolSystemBE.Models.Parent", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SchoolSystemBE.Models.Student", b =>
+                {
+                    b.HasOne("SchoolSystemBE.Models.User", "User")
+                        .WithOne("Student")
+                        .HasForeignKey("SchoolSystemBE.Models.Student", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("SchoolSystemBE.Models.StudentParent", b =>
                 {
                     b.HasOne("SchoolSystemBE.Models.Parent", "Parent")
                         .WithMany("StudentParents")
                         .HasForeignKey("ParentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("SchoolSystemBE.Models.Student", "Student")
                         .WithMany("StudentParents")
                         .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Parent");
 
                     b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("SchoolSystemBE.Models.TemporaryLogin", b =>
+                {
+                    b.HasOne("SchoolSystemBE.Models.User", "User")
+                        .WithOne("TemporaryLogin")
+                        .HasForeignKey("SchoolSystemBE.Models.TemporaryLogin", "UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("SchoolSystemBE.Models.Extracurricular", b =>
+                {
+                    b.Navigation("EcEnrollments");
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.Parent", b =>
@@ -353,7 +347,21 @@ namespace SchoolSystemBE.Migrations
 
             modelBuilder.Entity("SchoolSystemBE.Models.Student", b =>
                 {
+                    b.Navigation("EcEnrollments");
+
                     b.Navigation("StudentParents");
+                });
+
+            modelBuilder.Entity("SchoolSystemBE.Models.User", b =>
+                {
+                    b.Navigation("Parent")
+                        .IsRequired();
+
+                    b.Navigation("Student")
+                        .IsRequired();
+
+                    b.Navigation("TemporaryLogin")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

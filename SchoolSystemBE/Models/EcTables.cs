@@ -24,6 +24,8 @@ namespace SchoolSystemBE.Models
         public Kategorijos Category { get; set; }
         public decimal? Price { get; set; }
         public Tipai Type { get; set; }
+
+        public ICollection<EcEnrollment> EcEnrollments { get; set; }
     }
 
     public class EcEnrollment
@@ -33,5 +35,8 @@ namespace SchoolSystemBE.Models
         public int StudentId { get; set; }
         public DateTime EnrollmentDate { get; set; }
         public bool Status { get; set; }
+
+        public Student Student { get; set; }
+        public Extracurricular Extracurricular { get; set; }
     }
 }

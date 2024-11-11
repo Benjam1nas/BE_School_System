@@ -7,5 +7,7 @@ namespace SchoolSystemBE.Models
         public string PasswordHash { get; set; }
         public bool Status { get; set; }
         public int UserId { get; set; }
+
+        public User User { get; set; }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace SchoolSystemBE.Models
+﻿using System.ComponentModel;
+
+namespace SchoolSystemBE.Models
 {
     public enum RolesTipas
     {
@@ -14,5 +16,8 @@
         public string Password { get; set; }
         public RolesTipas Role { get; set; }
 
+        public TemporaryLogin TemporaryLogin { get; set; }
+        public Student Student { get; set; }
+        public Parent Parent { get; set; }
     }
 }
