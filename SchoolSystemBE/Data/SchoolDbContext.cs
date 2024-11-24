@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Internal;
 using SchoolSystemBE.Models;
+using System.Runtime.InteropServices;
 
 public class SchoolDbContext : DbContext
 {
@@ -12,6 +13,10 @@ public class SchoolDbContext : DbContext
     public DbSet<TemporaryLogin> TemporaryLogins { get; set; }
     public DbSet<Extracurricular> Extracurriculars { get; set; }
     public DbSet<EcEnrollment> EcEnrollments { get; set; }
+    public DbSet<Teacher> Teachers { get; set; }
+    public DbSet<Classroom> Classrooms { get; set; }
+    public DbSet<TeacherClass> TeacherClasses { get; set; }
+    public DbSet<StudentClass> StudentClasses { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -68,7 +73,6 @@ public class SchoolDbContext : DbContext
 
         modelBuilder.Entity<User>()
             .Property(u => u.Username)
-            .IsRequired()
             .HasMaxLength(255); 
 
         modelBuilder.Entity<User>()
@@ -77,7 +81,6 @@ public class SchoolDbContext : DbContext
 
         modelBuilder.Entity<User>()
             .Property(u => u.Password)
-            .IsRequired()
             .HasMaxLength(64); 
 
         modelBuilder.Entity<User>()
@@ -175,10 +178,6 @@ public class SchoolDbContext : DbContext
             .HasMaxLength(50); 
 
         modelBuilder.Entity<Extracurricular>()
-            .Property(ex => ex.Spots)
-            .IsRequired(); 
-
-        modelBuilder.Entity<Extracurricular>()
             .Property(ex => ex.StartDate)
             .IsRequired()
             .HasColumnType("DATETIME"); 
@@ -225,6 +224,85 @@ public class SchoolDbContext : DbContext
          .Property(enr => enr.Status)
          .HasDefaultValue(true);
 
+        //---------------------------------------------------TEACHER
+
+        modelBuilder.Entity<Teacher>()
+          .HasKey(t => t.Id);
+
+        modelBuilder.Entity<Teacher>()
+            .Property(t => t.Id)
+            .ValueGeneratedOnAdd();
+
+        modelBuilder.Entity<Teacher>()
+            .Property(t => t.FirstName)
+            .IsRequired()
+            .HasMaxLength(255);
+
+        modelBuilder.Entity<Teacher>()
+            .Property(t => t.LastName)
+            .IsRequired()
+            .HasMaxLength(255);
+
+        modelBuilder.Entity<Teacher>()
+            .Property(t => t.Email)
+            .HasMaxLength(255);
+
+        modelBuilder.Entity<Teacher>()
+            .Property(t => t.Phone)
+            .HasMaxLength(12);
+
+        modelBuilder.Entity<Teacher>()
+            .Property(t => t.UserId)
+            .IsRequired();
+
+        modelBuilder.Entity<Teacher>()
+            .Property(t => t.Status)
+            .HasDefaultValue(true);
+
+        //---------------------------------------------------CLASSROOM
+        modelBuilder.Entity<Classroom>()
+          .HasKey(c => c.Id);
+
+        modelBuilder.Entity<Classroom>()
+            .Property(c => c.Id)
+            .ValueGeneratedOnAdd();
+
+        modelBuilder.Entity<Classroom>()
+            .Property(c => c.Name)
+            .IsRequired()
+            .HasMaxLength(2);
+
+        modelBuilder.Entity<Classroom>()
+            .Property(c => c.SchoolYear)
+            .IsRequired()
+            .HasMaxLength(9);
+
+        //---------------------------------------------------------TEACHER CLASS
+
+        modelBuilder.Entity<TeacherClass>()
+          .HasKey(tc => tc.Id);
+
+        modelBuilder.Entity<TeacherClass>()
+            .Property(tc => tc.Id)
+            .ValueGeneratedOnAdd();
+
+        modelBuilder.Entity<TeacherClass>()
+            .Property(tc => tc.TeacherId)
+            .IsRequired();
+
+        modelBuilder.Entity<TeacherClass>()
+            .Property(tc => tc.ClassId)
+            .IsRequired();
+
+        modelBuilder.Entity<TeacherClass>()
+            .Property(tc => tc.Subject)
+            .IsRequired()
+            .HasMaxLength(255);
+
+        //------------------------------------------------STUDENT CLASS
+        modelBuilder.Entity<StudentClass>()
+        .HasKey(sc => new { sc.StudentId, sc.ClassId }); // PK sudaro kombinacija
+
         //-----------------------------------------------------------RELATIONSHIPS
 
         modelBuilder.Entity<TemporaryLogin>() //temporary login + user
@@ -265,6 +343,42 @@ public class SchoolDbContext : DbContext
             .HasOne(sp => sp.Extracurricular) 
             .WithMany(p => p.EcEnrollments)
             .HasForeignKey(sp => sp.EcId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Teacher>() //teacher + user
+            .HasOne(t => t.User)
+            .WithOne(u => u.Teacher)
+            .HasForeignKey<Teacher>(t => t.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<Classroom>() // class + teacher
+            .HasOne(c => c.Teacher)  
+            .WithOne(t => t.Classroom) 
+            .HasForeignKey<Classroom>(c => c.TeacherId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        modelBuilder.Entity<TeacherClass>() //teacher + teacherclass
+            .HasOne(tc => tc.Teacher)
+            .WithMany(t => t.TeacherClasses)
+            .HasForeignKey(tc => tc.TeacherId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<TeacherClass>() //class + teacherclass
+            .HasOne(tc => tc.Classroom)
+            .WithMany(c => c.TeacherClasses)
+            .HasForeignKey(tc => tc.ClassId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<StudentClass>() //student + studentclass
+            .HasOne(sc => sc.Student)
+            .WithMany(s => s.StudentClasses)
+            .HasForeignKey(sc => sc.StudentId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<StudentClass>() //class + studentclass
+            .HasOne(sc => sc.Classroom)
+            .WithMany(c => c.StudentClasses)
+            .HasForeignKey(sc => sc.ClassId)
             .OnDelete(DeleteBehavior.Restrict);
     }
 }

@@ -17,6 +17,6 @@ namespace SchoolSystemBE.Models
         public User User { get; set; }
         public ICollection<StudentParent> StudentParents { get; set; }
         public ICollection<EcEnrollment> EcEnrollments { get; set; }
-
+        public ICollection<StudentClass> StudentClasses { get; set; }
     }
 }
