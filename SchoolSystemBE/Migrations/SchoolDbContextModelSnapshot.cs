@@ -357,7 +357,7 @@ namespace SchoolSystemBE.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Password")
+                    b.Property<string>("PasswordHash")
                         .HasMaxLength(64)
                         .HasColumnType("nvarchar(64)");
 

@@ -48,7 +48,7 @@ namespace SchoolSystemBE.Controllers
                 .Include(u => u.TemporaryLogin)
                 .FirstOrDefaultAsync(u => u.Username == request.Username);
 
-            if (user == null || !VerifyPassword(request.Password, user.Password))
+            if (user == null || !VerifyPassword(request.Password, user.PasswordHash))
             {
                 return Unauthorized(new { error = "Invalid credentials" }); // Return 401 on failure
             }
@@ -165,7 +165,7 @@ namespace SchoolSystemBE.Controllers
             // Update the user associated with the temporary login
             var user = tempLogin.User;
             user.Username = newCredentials.Username; // Update username in Users table
-            user.Password = HashPassword(newCredentials.Password); // Update hashed password in Users table
+            user.PasswordHash = HashPassword(newCredentials.Password); // Update hashed password in Users table
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();

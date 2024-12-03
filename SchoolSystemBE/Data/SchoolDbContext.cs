@@ -80,7 +80,7 @@ public class SchoolDbContext : DbContext
             .IsUnique();    
 
         modelBuilder.Entity<User>()
-            .Property(u => u.Password)
+            .Property(u => u.PasswordHash)
             .HasMaxLength(64); 
 
         modelBuilder.Entity<User>()

@@ -13,7 +13,7 @@ namespace SchoolSystemBE.Models
     {
         public int Id { get; set; }
         public string? Username { get; set; }
-        public string? Password { get; set; }
+        public string? PasswordHash { get; set; }
         public RolesTipas Role { get; set; }
 
         public TemporaryLogin TemporaryLogin { get; set; }
