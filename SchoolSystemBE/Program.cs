@@ -19,7 +19,7 @@ builder.Services.AddCors(options =>
     options.AddPolicy("AllowLocalhost5173",
         builder =>
         {
-            builder.WithOrigins("http://localhost:5173") // Ensure this matches your frontend URL
+            builder.WithOrigins("http://localhost:5173", "https://localhost:5173") // Ensure this matches your frontend URL
                    .AllowAnyHeader()
                    .AllowAnyMethod()
                    .AllowCredentials(); // Allow sending cookies

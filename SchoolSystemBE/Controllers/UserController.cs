@@ -64,8 +64,9 @@ namespace SchoolSystemBE.Controllers
 
             HttpContext.Response.Cookies.Append("UserId", user.Id.ToString(), cookieOptions);
             HttpContext.Response.Cookies.Append("UserName", user.Username, cookieOptions);
+            HttpContext.Response.Cookies.Append("UserRole", user.Role.ToString(), cookieOptions);
 
-            return Ok(new { success = true, username = user.Username }); // Return success
+            return Ok(new { success = true, username = user.Username, role = user.Role.ToString() }); // Return success
         }
 
         [HttpPost("temporary-login")]

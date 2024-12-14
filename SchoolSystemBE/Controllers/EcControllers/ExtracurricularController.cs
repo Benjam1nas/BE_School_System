@@ -36,4 +36,45 @@ public class ExtracurricularController : ControllerBase
 
         return result;
     }
+    
+    [HttpPost]
+    public async Task<ActionResult<ExtracurricularDto>> CreateExtracurricular([FromBody] ExtracurricularDto dto)
+    {
+        // Validate input
+        if (dto == null)
+        {
+            return BadRequest("Extracurricular data is null.");
+        }
+
+        if (!Enum.TryParse<Kategorijos>(dto.Category, out var categoryEnum))
+        {
+            return BadRequest("Invalid Category value.");
+        }
+
+        if (!Enum.TryParse<Tipai>(dto.Type, out var typeEnum))
+        {
+            return BadRequest("Invalid Type value.");
+        }
+
+        // Map DTO to Model
+        var extracurricular = new Extracurricular
+        {
+            Name = dto.Name,
+            Description = dto.Description,
+            Coordinator = dto.Coordinator,
+            Spots = dto.Spots,
+            StartDate = dto.StartDate,
+            EndDate = dto.EndDate,
+            Category = categoryEnum,
+            Price = dto.Price,
+            Type = typeEnum
+        };
+
+        // Add and save to database
+        _context.Extracurriculars.Add(extracurricular);
+        await _context.SaveChangesAsync();
+
+        // Return the created object with 201 status
+        return CreatedAtAction(nameof(GetExtracurriculars), new { id = extracurricular.Id }, dto);
+    }
 }
