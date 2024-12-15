@@ -77,4 +77,67 @@ public class ExtracurricularController : ControllerBase
         // Return the created object with 201 status
         return CreatedAtAction(nameof(GetExtracurriculars), new { id = extracurricular.Id }, dto);
     }
+    
+    [HttpPut("{id}")]
+    public async Task<IActionResult> EditExtracurricular(int id, [FromBody] ExtracurricularDto dto)
+    {
+        if (id <= 0 || dto == null)
+        {
+            return BadRequest("Invalid request.");
+        }
+
+        var extracurricular = await _context.Extracurriculars.FindAsync(id);
+
+        if (extracurricular == null)
+        {
+            return NotFound($"Extracurricular with ID {id} not found.");
+        }
+
+        if (!Enum.TryParse<Kategorijos>(dto.Category, out var categoryEnum))
+        {
+            return BadRequest("Invalid Category value.");
+        }
+
+        if (!Enum.TryParse<Tipai>(dto.Type, out var typeEnum))
+        {
+            return BadRequest("Invalid Type value.");
+        }
+
+        // Update the entity properties
+        extracurricular.Name = dto.Name;
+        extracurricular.Description = dto.Description;
+        extracurricular.Coordinator = dto.Coordinator;
+        extracurricular.Spots = dto.Spots;
+        extracurricular.StartDate = dto.StartDate;
+        extracurricular.EndDate = dto.EndDate;
+        extracurricular.Category = categoryEnum;
+        extracurricular.Price = dto.Price;
+        extracurricular.Type = typeEnum;
+
+        _context.Entry(extracurricular).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+    
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> DeleteExtracurricular(int id)
+    {
+        if (id <= 0)
+        {
+            return BadRequest("Invalid ID.");
+        }
+
+        var extracurricular = await _context.Extracurriculars.FindAsync(id);
+
+        if (extracurricular == null)
+        {
+            return NotFound($"Extracurricular with ID {id} not found.");
+        }
+
+        _context.Extracurriculars.Remove(extracurricular);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
 }

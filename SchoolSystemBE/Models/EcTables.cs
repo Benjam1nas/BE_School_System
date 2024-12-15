@@ -3,7 +3,9 @@ namespace SchoolSystemBE.Models
     public enum Kategorijos
     {
         menai,
-        sportas
+        sportas,
+        mokslas,
+        kiti
     }
 
     public enum Tipai
