@@ -47,7 +47,7 @@ namespace SchoolSystemBE.Migrations
                     b.HasIndex("TeacherId")
                         .IsUnique();
 
-                    b.ToTable("Classrooms");
+                    b.ToTable("Classrooms", (string)null);
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.EcEnrollment", b =>
@@ -78,7 +78,7 @@ namespace SchoolSystemBE.Migrations
 
                     b.HasIndex("StudentId");
 
-                    b.ToTable("EcEnrollments");
+                    b.ToTable("EcEnrollments", (string)null);
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.Extracurricular", b =>
@@ -123,7 +123,7 @@ namespace SchoolSystemBE.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Extracurriculars");
+                    b.ToTable("Extracurriculars", (string)null);
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.Parent", b =>
@@ -160,7 +160,7 @@ namespace SchoolSystemBE.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Parents");
+                    b.ToTable("Parents", (string)null);
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.Student", b =>
@@ -209,7 +209,7 @@ namespace SchoolSystemBE.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Students");
+                    b.ToTable("Students", (string)null);
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.StudentClass", b =>
@@ -224,7 +224,7 @@ namespace SchoolSystemBE.Migrations
 
                     b.HasIndex("ClassId");
 
-                    b.ToTable("StudentClasses");
+                    b.ToTable("StudentClasses", (string)null);
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.StudentParent", b =>
@@ -239,7 +239,7 @@ namespace SchoolSystemBE.Migrations
 
                     b.HasIndex("ParentId");
 
-                    b.ToTable("StudentParents");
+                    b.ToTable("StudentParents", (string)null);
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.Teacher", b =>
@@ -281,7 +281,7 @@ namespace SchoolSystemBE.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Teachers");
+                    b.ToTable("Teachers", (string)null);
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.TeacherClass", b =>
@@ -309,7 +309,7 @@ namespace SchoolSystemBE.Migrations
 
                     b.HasIndex("TeacherId");
 
-                    b.ToTable("TeacherClasses");
+                    b.ToTable("TeacherClasses", (string)null);
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.TemporaryLogin", b =>
@@ -346,7 +346,7 @@ namespace SchoolSystemBE.Migrations
                     b.HasIndex("Username")
                         .IsUnique();
 
-                    b.ToTable("TemporaryLogins");
+                    b.ToTable("TemporaryLogins", (string)null);
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.User", b =>
@@ -374,7 +374,7 @@ namespace SchoolSystemBE.Migrations
                         .IsUnique()
                         .HasFilter("[Username] IS NOT NULL");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("SchoolSystemBE.Models.Classroom", b =>

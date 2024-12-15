@@ -38,7 +38,7 @@ namespace SchoolSystemBE.Models
         public DateTime EnrollmentDate { get; set; }
         public bool Status { get; set; }
 
-        public Student Student { get; set; }
-        public Extracurricular Extracurricular { get; set; }
+        public Student? Student { get; set; }
+        public Extracurricular? Extracurricular { get; set; }
     }
 }
