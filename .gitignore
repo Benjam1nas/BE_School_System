@@ -362,3 +362,5 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /SchoolSystemBE/appsettings.json
+.idea
+docker-compose.yml
