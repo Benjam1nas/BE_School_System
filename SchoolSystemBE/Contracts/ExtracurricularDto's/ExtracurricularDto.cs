@@ -10,4 +10,6 @@
     public string Category { get; set; }  // Category as string
     public decimal? Price { get; set; }
     public string Type { get; set; }  // Type as string
+    public int FilledSpots { get; set; }
 }
+
