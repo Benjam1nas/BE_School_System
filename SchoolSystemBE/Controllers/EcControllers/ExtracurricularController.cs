@@ -16,22 +16,28 @@ public class ExtracurricularController : ControllerBase
     public async Task<ActionResult<IEnumerable<ExtracurricularDto>>> GetExtracurriculars()
     {
         // Fetch the data from the database first
-        var extracurriculars = await _context.Extracurriculars.ToListAsync();
+        var extracurriculars = await _context.Extracurriculars
+        .Select(ex => new
+        {
+            Extracurricular = ex,
+            FilledSpots = _context.EcEnrollments.Count(e => e.EcId == ex.Id)
+        })
+        .ToListAsync();
 
         // Map the enum values to their string equivalents after fetching data
         var result = extracurriculars.Select(ex => new ExtracurricularDto
         {
-            Id = ex.Id,
-            Name = ex.Name,
-            Description = ex.Description,
-            Coordinator = ex.Coordinator,
-            Spots = ex.Spots,
-            StartDate = ex.StartDate,
-            EndDate = ex.EndDate,
-            // Map enum values to string after fetching the data
-            Category = Enum.GetName(typeof(Kategorijos), ex.Category),
-            Price = ex.Price,
-            Type = Enum.GetName(typeof(Tipai), ex.Type)
+            Id = ex.Extracurricular.Id,
+            Name = ex.Extracurricular.Name,
+            Description = ex.Extracurricular.Description,
+            Coordinator = ex.Extracurricular.Coordinator,
+            Spots = ex.Extracurricular.Spots,
+            StartDate = ex.Extracurricular.StartDate,
+            EndDate = ex.Extracurricular.EndDate,
+            Category = Enum.GetName(typeof(Kategorijos), ex.Extracurricular.Category),
+            Price = ex.Extracurricular.Price,
+            Type = Enum.GetName(typeof(Tipai), ex.Extracurricular.Type),
+            FilledSpots = ex.FilledSpots // New property
         }).ToList();
 
         return result;
