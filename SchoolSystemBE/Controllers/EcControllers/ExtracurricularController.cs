@@ -128,14 +128,23 @@ public class ExtracurricularController : ControllerBase
             return BadRequest("Invalid ID.");
         }
 
-        var extracurricular = await _context.Extracurriculars.FindAsync(id);
+        // Fetch the extracurricular along with related enrollments
+        var extracurricular = await _context.Extracurriculars
+            .Include(e => e.EcEnrollments) // Ensure enrollments are loaded
+            .FirstOrDefaultAsync(e => e.Id == id);
 
         if (extracurricular == null)
         {
             return NotFound($"Extracurricular with ID {id} not found.");
         }
 
+        // Remove related enrollments first
+        _context.EcEnrollments.RemoveRange(extracurricular.EcEnrollments);
+
+        // Remove the extracurricular
         _context.Extracurriculars.Remove(extracurricular);
+
+        // Save changes to the database
         await _context.SaveChangesAsync();
 
         return NoContent();
